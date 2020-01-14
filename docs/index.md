@@ -32,7 +32,9 @@ Pringo is a service for Warehouse.
         curl http://127.0.0.1:8000/api/v1/orders/?q=muller
 
 1- Swagger docs at /api-docs/
+
 2- Genral docs at port 8001
+
 3- You can deploy on Huroku directly by specifying credentials in env file
 
 ## Initialize the project
