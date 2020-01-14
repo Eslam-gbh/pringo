@@ -60,6 +60,11 @@ class TestOrderTestCase(APITestCase):
         eq_(response.data['count'], 1)
         eq_(response.data['results'][0]['customer_name'], 'Thomas Müller')
 
+        url = reverse('order-list') + '?q=inavlid_name'
+        response = self.client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['count'], 0)
+
     def test_duplicate_requests_fails(self):
         response = self.client.post(
             self.url,
