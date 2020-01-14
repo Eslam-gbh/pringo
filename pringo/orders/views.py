@@ -38,6 +38,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             url_path='available-storages',
             url_name='available_storages')
     def available_storages(self, request, pk=None):
+        ''' Gets Available storages for given order lines '''
         try:
             serializer = AvailableStoragesSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
