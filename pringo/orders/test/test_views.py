@@ -3,10 +3,10 @@ from django.urls import reverse
 from nose.tools import eq_
 from rest_framework.test import APITestCase
 from rest_framework import status
-from .factories import SKUFactory, StorageFactory
+from .factories import SKUFactory, StorageFactory, OrderFactory
 
 
-class TestAvailableStoragesTestCase(APITestCase):
+class TestOrderTestCase(APITestCase):
     """
     Tests /order list operations.
     """
@@ -17,6 +17,7 @@ class TestAvailableStoragesTestCase(APITestCase):
         StorageFactory(id='zzz', sku=sku1, stock=5)
         StorageFactory(id='yyy', sku=sku1, stock=100)
         StorageFactory(id='xxx', sku=sku2, stock=100)
+        cls.order = OrderFactory(customer_name='Thomas Müller')
         cls.data = {
             'lines': [{
                 'sku': 'abc',
@@ -52,6 +53,12 @@ class TestAvailableStoragesTestCase(APITestCase):
         }]
         self.assertDictEqual({'storages': expected_response}, response.data)
 
+    def test_filter_order(self):
+        url = reverse('order-list') + '?q=muller'
+        response = self.client.get(url)
+        eq_(response.status_code, status.HTTP_200_OK)
+        eq_(response.data['count'], 1)
+        eq_(response.data['results'][0]['customer_name'], 'Thomas Müller')
 
 #     def test_duplicate_requests_fails(self):
 #         response = self.client.post(
