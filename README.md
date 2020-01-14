@@ -8,9 +8,9 @@ A Warehouse service.
 - [Travis CLI](http://blog.travis-ci.com/2013-01-14-new-client/)(Continuous Deployment)
 - [Heroku Toolbelt](https://toolbelt.heroku.com/) (Continuous Deployment)
 
-## SCHEMA
+## DOCS
 
-Please Go to docs on port 8001 to find Schema and better views
+Please Go to docs on port 8001 to find docs and better views
 
 ## Swagger
 
