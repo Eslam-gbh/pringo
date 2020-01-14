@@ -60,16 +60,18 @@ class TestOrderTestCase(APITestCase):
         eq_(response.data['count'], 1)
         eq_(response.data['results'][0]['customer_name'], 'Thomas Müller')
 
-#     def test_duplicate_requests_fails(self):
-#         response = self.client.post(
-#             self.url,
-#             content_type='application/json',
-#             data=json.dumps(self.order_post_data),
-#             HTTP_X_IDEMPOTENCY_KEY='123',
-#         )
-#         eq_(response.status_code, status.HTTP_201_CREATED)
-#         response = self.client.post(self.url,
-#                                     content_type='application/json',
-#                                     data=json.dumps(self.order_post_data),
-#                                     HTTP_X_IDEMPOTENCY_KEY='123')
-#         eq_(response.status_code, status.HTTP_400_BAD_REQUEST)
+    def test_duplicate_requests_fails(self):
+        response = self.client.post(
+            self.url,
+            content_type='application/json',
+            data=json.dumps(self.data),
+            HTTP_X_IDEMPOTENCY_KEY='123',
+        )
+        eq_(response.status_code, status.HTTP_200_OK)
+        response = self.client.post(
+            self.url,
+            content_type='application/json',
+            data=json.dumps(self.data),
+            HTTP_X_IDEMPOTENCY_KEY='123',
+        )
+        eq_(response.status_code, status.HTTP_400_BAD_REQUEST)

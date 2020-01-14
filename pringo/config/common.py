@@ -24,6 +24,7 @@ class Common(Configuration):
 
         # Your apps
         'pringo.users',
+        'pringo.orders',
 
     )
 
@@ -36,6 +37,8 @@ class Common(Configuration):
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        # Custom Middleware
+        'pringo.orders.middlewares.IdempotencyMiddleware',
     )
 
     ALLOWED_HOSTS = ["*"]
@@ -199,3 +202,5 @@ class Common(Configuration):
             'rest_framework.authentication.TokenAuthentication',
         )
     }
+
+    IDEMPOTENCY_TIMEOUT = int(os.getenv('IDEMPOTENCY_TIMEOUT', 10))
