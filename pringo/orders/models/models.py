@@ -1,5 +1,6 @@
 from django.db import models
 from ool import VersionField, VersionedMixin
+from .managers import StorageCustomManger
 
 
 class BaseModel(models.Model):
@@ -18,9 +19,8 @@ class OptimisticConcurrencyBaseModel(VersionedMixin, BaseModel):
 
 
 class Order(BaseModel):
-    customer_name = models.CharField(
-        max_length=50
-    )
+    customer_name = models.CharField(max_length=50)
+    customer_name_decoded = models.CharField(max_length=50)
 
     class Meta:
         verbose_name = "Order"
@@ -34,11 +34,6 @@ class OrderLine(OptimisticConcurrencyBaseModel):
     class Meta:
         verbose_name = "Order Line"
         verbose_name_plural = "Order Lines"
-
-    order = models.ForeignKey(
-        'Order',
-        on_delete=models.CASCADE,
-    )
 
     sku = models.ForeignKey(
         'SKU',
@@ -63,6 +58,7 @@ class Storage(OptimisticConcurrencyBaseModel):
         'SKU',
         on_delete=models.CASCADE,
     )
+    objects = StorageCustomManger()
 
     def __str__(self):
         return f"Storage {self.id} for SKU {self.sku_id} with quantity {self.stock}"
@@ -73,6 +69,7 @@ class SKU(BaseModel):
         verbose_name = "SKU"
         verbose_name_plural = "SKUs"
 
+    id = models.CharField(max_length=100, primary_key=True)
     product_name = models.CharField(max_length=250)
 
     def __str__(self):
